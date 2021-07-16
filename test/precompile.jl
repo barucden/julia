@@ -823,6 +823,9 @@ precompile_test_harness("Issue #25971") do load_path
     chmod(sourcefile, 0o600)
     cachefile = Base.compilecache(Base.PkgId("Foo25971"))
     @test filemode(sourcefile) == filemode(cachefile)
+    chmod(sourcefile, 0o444)
+    cachefile = Base.compilecache(Base.PkgId("Foo25971"))
+    @test filemode(cachefile) & 0o777 == 0o644
 end
 
 precompile_test_harness("Issue #38312") do load_path
